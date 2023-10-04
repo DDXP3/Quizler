@@ -30,9 +30,18 @@ button {
 
 .quizcard {
     text-align: center;
-    padding: 50%;
+    margin-top: 50px;
+    padding: 100px;
     background-color: white;
     display: none;
+}
+
+.wrongOrRight {
+    display: none;
+}
+
+.Choices {
+    margin-top: 50px;
 }
 
 footer {
