@@ -41,7 +41,9 @@ button {
 }
 
 .Choices {
-    margin-top: 50px;
+    position: absolute;
+    top: 126px;
+    left: 45%;
 }
 
 footer {
