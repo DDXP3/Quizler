@@ -36,8 +36,9 @@ button {
     display: none;
 }
 
-.wrongOrRight {
+.wrongAndHighscore {
     display: none;
+    z-index: 2;
 }
 
 .Choices {

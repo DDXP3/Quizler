@@ -4,45 +4,60 @@
 var btn = document.querySelector("#startQuiz");
 var title = document.querySelector(".title");
 var foot = document.querySelector("footer");
-var score = document.querySelector(".scoreboard");
+var score = document.querySelector(".score");
 var timer = document.querySelector(".timer");
 var quizcard = document.querySelector(".quizcard");
-var WorR = document.querySelector(".wrongOrRight");
+var WaH = document.querySelector(".wrongAndHighscore")
 var quest = document.querySelector(".question");
+var opt = document.querySelector(".Choices")
 var choice1 = document.querySelector("#choice1");
 var choice2 = document.querySelector("#choice2");
 var choice3 = document.querySelector("#choice3");
 var choice4 = document.querySelector("#choice4");
-var timernum = 60;
-var score;
+var timernum = 20;
 var scorenum = 0;
-var questions= ["Question 1: What is 1+1?","Question 2: What is Gary's dj name?","Question 3: What was the first question?","Question 4: What is the answer to question 2?","Question 5: What does HTML stand for?","Question 6: What does CSS stand for?","Question 7: What does JS stand for?","Question 8: Did you know, that squids can fly?","Question 9: Did you know that Gary is a Mindflayer?","Question 10: Did you know?"]
-var answers= ["2","DJGarBear","","","","","","","",""]
-value = 0;
+var countdown;
+var i = 0;
+var questions= [
+    "Question 1: What is 1+1?",
+    "Question 2: What is Gary's dj name?",
+    "Question 3: Did you know, that squids can fly?",
+    "Question 4: Did you know that Gary is a Mindflayer?",
+    "Question 5: Did you know?"
+]
+var answers= [
+    {choice1: 0, choice2: 1, choice3: 0, choice4: 0, option1: 1, option2: 2, option3: 3, option4: 4},
+    {choice1: 1, choice2: 0, choice3: 0, choice4: 0, option1: "DJ GarBear", option2: "DJ Gar", option3: "DJ Snail", option4: "DJ GA"},
+    {choice1: 0, choice2: 0, choice3: 0, choice4: 1, option1: "Yes, I Knew", option2: "Yes, I heard", option3: "No, I didn't know", option4: "What?"},
+    {choice1: 0, choice2: 0, choice3: 0, choice4: 1, option1: "Yes, I Knew", option2: "Yes, I heard", option3: "No, I didn't know", option4: "What?"},
+    {choice1: 1, choice2: 1, choice3: 1, choice4: 1, option1: "Yes, I Knew", option2: "Yes, I heard", option3: "No, I didn't know", option4: "What?"},
+]
 
 //starting point
 btn.addEventListener("click", startQuiz);
 
-//Value
-function addValue1(){
-    value = 1;
-}
+choice1.addEventListener("click", clickChoice1)
+choice2.addEventListener("click", clickChoice2)
+choice3.addEventListener("click", clickChoice3)
+choice4.addEventListener("click", clickChoice4)
 
-function addValue2(){
-    value = 2;
-}
-
-function addValue3(){
-    value = 3;
-}
-
-function addValue4(){
-    value = 4;
+//start the Timer
+function startTimer(){ 
+    console.log("startTimer")
+    timernum = 20;
+    countdown = setInterval(function() {
+        timer.textContent = timernum;
+        timernum--;
+        if (timernum < 0) {
+            //game over
+          clearInterval(countdown);
+          quizOver();
+        }
+      }, 1000)
 }
 
 //start the Quiz
 function startQuiz(){
-    value = 0;
     console.log("startQuiz");
 
 //     set ".title font size to large"
@@ -57,152 +72,122 @@ function startQuiz(){
 //      set "button to display: none;"
     btn.setAttribute("style","display: none;")
 
-//     set "display the questions and choices"
-    startQuestion1();
+    quest.textContent = questions[i]
+    choice1.textContent = answers[i].option1;
+    choice2.textContent = answers[i].option2;
+    choice3.textContent = answers[i].option3;
+    choice4.textContent = answers[i].option4;
+
     startTimer();
 }
 
-//start the questions
-function startQuestion1(){
-    value = 0;
-    console.log("startQuetion1");
-    quest.textContent = questions[0]
-    choice1.textContent = 1;
-    choice2.textContent = 2;
-    choice3.textContent = 3;
-    choice4.textContent = 4;
-//     if (value = 2) {
-// //      set "wrong or right to red or green and display block"
-//         WorR.setAttribute("style","background-color:green;")
-//         WorR.setAttribute("style","display:block;")
-//         WorR.textContent = "Correct"
-//         score.textContent = scorenum;
-//         scorenum++;
-//         startQuestion2();
-//     }
-//     if (value = 1 || 3 || 4) {
-//         WorR.setAttribute("style","background-color:red;")
-//         WorR.setAttribute("style","display:block;")
-//         WorR.textContent = "Wrong"
-//         startQuestion2();
-//     }
-}
-
-function startQuestion2(){
-    value = 0;
-    console.log("startQuetion2");
-    quest.textContent = questions[1]
-    choice1.textContent = "DJ.GB";
-    choice2.textContent = "DJ GarBear";
-    choice3.textContent = "DJ MindFlayer";
-    choice4.textContent = "DJ SnailRizzal";
-    if (value = 1 || 2 || 3 || 4) {
- //      set "wrong or right to red or green and display block"
-        WorR.setAttribute("style","background-color:green;")
-        WorR.setAttribute("style","display:block;")
-        WorR.textContent = "Correct"
-        score.textContent = scorenum;
-        scorenum++;
-        // startQuestion3();
+function clickChoice1(){
+    console.log("Clickchoice1");
+    if (answers[i].choice1 === 0){
+        timernum = timernum - 5;
+        timer.textContent = timernum; 
+        title.setAttribute("style","background-color:red;");
+        title.textContent = "wrong"
     }
+    else{
+    //answers[i].choice1 = 1 {
+        scorenum++;
+        console.log(scorenum);
+        score.textContent = scorenum;
+        console.log("Correct");
+        title.setAttribute("style","background-color:rgb(0, 88, 0);");
+        title.setAttribute("style","font-size: large;");
+        title.textContent = "Javascript Fundamental Quiz"
+    }
+    quiz();
 }
 
-function startQuestion3(){
-    value = 0;
-    console.log("startQuetion3");
-    quest.textContent = questions[2]
-    choice1.textContent = "What is 1 x 2?";
-    choice2.textContent = "What is Gary's DJ name?";
-    choice3.textContent = "What is 1+1?";
-    choice4.textContent = "What is the quiz?";
-}
-
-function startQuestion4(){
-    value = 0;
-    console.log("startQuetion4");
-    quest.textContent = questions[3]
-    choice1.textContent = "DJ.GB";
-    choice2.textContent = "DJ GarBear";
-    choice3.textContent = "DJ MindFlayer";
-    choice4.textContent = "DJ SnailRizzal";
-}
-
-function startQuestion5(){
-    value = 0;
-    console.log("startQuetion5");
-    quest.textContent = questions[4]
-    choice1.textContent = "Hot Turtle Milk Level";
-    choice2.textContent = "Hypertext Makeup Language";
-    choice3.textContent = "Hypertext Markup Language";
-    choice4.textContent = "Hydro Text Making Language";
-}
-
-function startQuestion6(){
-    value = 0;
-    console.log("startQuetion6");
-    quest.textContent = questions[5]
-    choice1.textContent = "Cascading Super Soaker";
-    choice2.textContent = "Cat's Super Shaker";
-    choice3.textContent = "Car's Shiny Shiner";
-    choice4.textContent = "Cascading Style Sheets";
-}
-
-function startQuestion7(){
-    value = 0;
-    console.log("startQuetion7");
-    quest.textContent = questions[6]
-    choice1.textContent = "Johna Skitter";
-    choice2.textContent = "John Skitter";
-    choice3.textContent = "Java Sandal";
-    choice4.textContent = "Java Scrpit";
-}
-
-function startQuestion8(){
-    value = 0;
-    console.log("startQuetion8");
-    quest.textContent = questions[7]
-    choice1.textContent = "Yeah, I know";
-    choice2.textContent = "I kinda knew";
-    choice3.textContent = "I didn't know";
-    choice4.textContent = "What?!?";
-}
-
-function startQuestion9(){
-    value = 0;
-    console.log("startQuetion9");
-    quest.textContent = questions[8]
-    choice1.textContent = "Yeah, I know";
-    choice2.textContent = "I kinda knew";
-    choice3.textContent = "I didn't know";
-    choice4.textContent = "What?!?";
-}
-
-function startQuestion10(){
-    value = 0;
-    console.log("startQuetion10");
-    quest.textContent = questions[9]
-    choice1.textContent = "Yeah, I know";
-    choice2.textContent = "I kinda knew";
-    choice3.textContent = "I didn't know";
-    choice4.textContent = "What?!?";
-}
-
-//start the Timer
-function startTimer(){ 
-    value = 0;
-    console.log("startTimer")
-    timernum = 60;
-    var countdown = setInterval(function() {
+function clickChoice2(){
+    console.log("Clickchoice2");
+    if (answers[i].choice2 === 0){
+        timernum = timernum - 5;
         timer.textContent = timernum;
-        timernum--;
-        if (timernum < 0) {
-            //game over
-          clearInterval(countdown);
-          quizOver();
-        }
-      }, 1000)
+        console.log("wrong");
+        title.setAttribute("style","background-color:red;");
+        title.textContent = "wrong"
+    }
+    else{
+    // (answers[i].choice2 = 1){
+        scorenum++;
+        console.log(scorenum);
+        score.textContent = scorenum;
+        console.log("Correct");
+        title.setAttribute("style","background-color:rgb(0, 88, 0);");
+        title.setAttribute("style","font-size: large;");
+        title.textContent = "Javascript Fundamental Quiz"
+    }
+
+    quiz();
 }
+
+function clickChoice3(){
+    console.log("Clickchoice3");
+    if (answers[i].choice3 === 0){
+        timernum = timernum - 5;
+        timer.textContent = timernum; 
+        console.log("wrong");
+        title.setAttribute("style","background-color:red;");
+        title.textContent = "wrong"
+    }
+    else{
+    // (answers[i].choice3 = 1){
+        scorenum++;
+        console.log(scorenum);
+        score.textContent = scorenum;
+        console.log("Correct");
+        title.setAttribute("style","background-color:rgb(0, 88, 0);");
+        title.setAttribute("style","font-size: large;");
+        title.textContent = "Javascript Fundamental Quiz"
+    }
+    quiz();
+}
+
+function clickChoice4(){
+    console.log("Clickchoice4");
+    if (answers[i].choice4 === 0){
+        timernum = timernum - 5;
+        timer.textContent = timernum; 
+        console.log("wrong");
+        title.setAttribute("style","background-color:red;");
+        title.textContent = "wrong"
+    }
+    else{
+    // (answers[i].choice4 = 1){
+        scorenum++;
+        console.log(scorenum);
+        score.textContent = scorenum;
+        console.log("Correct");
+        title.setAttribute("style","background-color:rgb(0, 88, 0);");
+        title.setAttribute("style","font-size: large;");
+        title.textContent = "Javascript Fundamental Quiz"
+    }
+        quiz();
+}
+
+function quiz(){
+    console.log("quiz");
+    i++;
+    quest.textContent = questions[i]
+    choice1.textContent = answers[i].option1;
+    choice2.textContent = answers[i].option2;
+    choice3.textContent = answers[i].option3;
+    choice4.textContent = answers[i].option4;
+
+    if (i > 4){
+        quest.textContent = "Quiz Over! "
+        opt.setAttribute("style","display:none;");
+        clearInterval(countdown);
+    }
+  }
 
 function quizOver(){
     console.log("quizOver")
+    quest.textContent = "Quiz Over!"
+    opt.setAttribute("style","display:none;");
+
 }
