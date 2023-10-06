@@ -172,16 +172,18 @@ function clickChoice4(){
 function quiz(){
     console.log("quiz");
     i++;
-    quest.textContent = questions[i]
-    choice1.textContent = answers[i].option1;
-    choice2.textContent = answers[i].option2;
-    choice3.textContent = answers[i].option3;
-    choice4.textContent = answers[i].option4;
-
     if (i > 4){
-        quest.textContent = "Quiz Over! "
+        quest.textContent = scorenum
         opt.setAttribute("style","display:none;");
         clearInterval(countdown);
+        title.textContent ="Your Highscore is"
+    }
+    if (i <= 4){
+        quest.textContent = questions[i]
+        choice1.textContent = answers[i].option1;
+        choice2.textContent = answers[i].option2;
+        choice3.textContent = answers[i].option3;
+        choice4.textContent = answers[i].option4;
     }
   }
 
