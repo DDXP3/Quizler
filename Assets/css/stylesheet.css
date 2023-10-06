@@ -12,6 +12,10 @@ body {
     padding: 0% 5%;
 }
 
+.Highscore {
+    display: none;
+}
+
 .time {
     position: absolute;
     left: 90%
@@ -22,10 +26,9 @@ body {
     font-size: large;
 }
 
-button {
-    position: relative;
-    top: 126px;
-    left: 47%;
+.quizbtn {
+    text-align: center;
+    margin-top: 126px;
 }
 
 .quizcard {
@@ -36,15 +39,18 @@ button {
     display: none;
 }
 
+.initialSubmition {
+    display: none;
+}
+
 .wrongAndHighscore {
     display: none;
     z-index: 2;
 }
 
 .Choices {
-    position: absolute;
-    top: 126px;
-    left: 45%;
+    text-align: center;
+    margin-top: 126px;
 }
 
 footer {

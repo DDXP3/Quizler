@@ -31,15 +31,43 @@ var answers= [
     {choice1: 0, choice2: 0, choice3: 0, choice4: 1, option1: "Yes, I Knew", option2: "Yes, I heard", option3: "No, I didn't know", option4: "What?"},
     {choice1: 0, choice2: 0, choice3: 0, choice4: 1, option1: "Yes, I Knew", option2: "Yes, I heard", option3: "No, I didn't know", option4: "What?"},
     {choice1: 1, choice2: 1, choice3: 1, choice4: 1, option1: "Yes, I Knew", option2: "Yes, I heard", option3: "No, I didn't know", option4: "What?"},
-]
+];
+var inSub = document.querySelector(".initialSubmition");
+var initialInput = document.querySelector("#initials");
+var subBtn = document.querySelector(".sub");
+var HS = document.querySelector(".Highscore");
+var HSnum = document.querySelector(".HS");
+var HStime = document.querySelector(".HStime");
+var HSin = document.querySelector(".initials");
+var highscore = 0;
+var highscoretime = 1;
+var initial = "IN";
+var highscorenum;
+var highscoretimenum;
+var highscoreIP = [];
 
 //starting point
 btn.addEventListener("click", startQuiz);
 
-choice1.addEventListener("click", clickChoice1)
-choice2.addEventListener("click", clickChoice2)
-choice3.addEventListener("click", clickChoice3)
-choice4.addEventListener("click", clickChoice4)
+//select choice button
+choice1.addEventListener("click", clickChoice1);
+choice2.addEventListener("click", clickChoice2);
+choice3.addEventListener("click", clickChoice3);
+choice4.addEventListener("click", clickChoice4);
+
+//submit button
+subBtn.addEventListener("click", submit);
+
+//show highscore if HSin.length >0
+highscorenum = localStorage.getItem(0);
+if (highscorenum > 0) {
+    HS.setAttribute("style","display:block;");
+    highscoretimenum = localStorage.getItem(1)
+    highscoreIP = localStorage.getItem("IN")
+    HSnum.textContent = highscorenum
+    HStime.textContent = highscoretimenum
+    HSin.textContent = highscoreIP
+}
 
 //start the Timer
 function startTimer(){ 
@@ -48,7 +76,7 @@ function startTimer(){
     countdown = setInterval(function() {
         timer.textContent = timernum;
         timernum--;
-        if (timernum < 0) {
+        if (timernum < 1) {
             //game over
           clearInterval(countdown);
           quizOver();
@@ -176,7 +204,8 @@ function quiz(){
         quest.textContent = scorenum
         opt.setAttribute("style","display:none;");
         clearInterval(countdown);
-        title.textContent ="Your Highscore is"
+        title.textContent ="Your Score is"
+        checkHighscore();
     }
     if (i <= 4){
         quest.textContent = questions[i]
@@ -191,5 +220,24 @@ function quizOver(){
     console.log("quizOver")
     quest.textContent = "Quiz Over!"
     opt.setAttribute("style","display:none;");
+}
 
+function checkHighscore(){
+    highscorenum = localStorage.getItem(highscore);
+        console.log(highscorenum);
+        if (scorenum > highscorenum || highscorenum === null){
+            title.textContent = "New Highscore!"
+        inSub.setAttribute("style","display: block;");
+        }
+}
+
+//saving to local storage
+function submit(){
+    highscorenum = scorenum
+    highscoretimenum = timernum
+    highscoreIP = ""
+    localStorage.setItem(highscore, highscorenum);
+    localStorage.setItem(highscoretime, highscoretimenum);
+    localStorage.setItem(initial, highscoreIP);
+    check();
 }
