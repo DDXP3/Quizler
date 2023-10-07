@@ -39,12 +39,9 @@ var HS = document.querySelector(".Highscore");
 var HSnum = document.querySelector(".HS");
 var HStime = document.querySelector(".HStime");
 var HSin = document.querySelector(".initials");
-var highscore = 0;
-var highscoretime = 1;
-var initial = "IN";
 var highscorenum;
 var highscoretimenum;
-var highscoreIP = [];
+var highscoreIP;
 
 //starting point
 btn.addEventListener("click", startQuiz);
@@ -56,14 +53,14 @@ choice3.addEventListener("click", clickChoice3);
 choice4.addEventListener("click", clickChoice4);
 
 //submit button
-subBtn.addEventListener("click", submit);
+subBtn.addEventListener("click", submitscore);
 
 //show highscore if HSin.length >0
-highscorenum = localStorage.getItem(0);
+highscorenum = localStorage.getItem("highscore");
 if (highscorenum > 0) {
     HS.setAttribute("style","display:block;");
-    highscoretimenum = localStorage.getItem(1)
-    highscoreIP = localStorage.getItem("IN")
+    highscoretimenum = localStorage.getItem("highscoretime")
+    highscoreIP = localStorage.getItem("highscorein")
     HSnum.textContent = highscorenum
     HStime.textContent = highscoretimenum
     HSin.textContent = highscoreIP
@@ -71,12 +68,11 @@ if (highscorenum > 0) {
 
 //start the Timer
 function startTimer(){ 
-    console.log("startTimer")
     timernum = 20;
     countdown = setInterval(function() {
         timer.textContent = timernum;
         timernum--;
-        if (timernum < 1) {
+        if (timernum < 0) {
             //game over
           clearInterval(countdown);
           quizOver();
@@ -86,7 +82,6 @@ function startTimer(){
 
 //start the Quiz
 function startQuiz(){
-    console.log("startQuiz");
 
 //     set ".title font size to large"
     title.setAttribute("style","font-size: large;");
@@ -110,7 +105,6 @@ function startQuiz(){
 }
 
 function clickChoice1(){
-    console.log("Clickchoice1");
     if (answers[i].choice1 === 0){
         timernum = timernum - 5;
         timer.textContent = timernum; 
@@ -120,9 +114,7 @@ function clickChoice1(){
     else{
     //answers[i].choice1 = 1 {
         scorenum++;
-        console.log(scorenum);
         score.textContent = scorenum;
-        console.log("Correct");
         title.setAttribute("style","background-color:rgb(0, 88, 0);");
         title.setAttribute("style","font-size: large;");
         title.textContent = "Javascript Fundamental Quiz"
@@ -131,20 +123,16 @@ function clickChoice1(){
 }
 
 function clickChoice2(){
-    console.log("Clickchoice2");
     if (answers[i].choice2 === 0){
         timernum = timernum - 5;
         timer.textContent = timernum;
-        console.log("wrong");
         title.setAttribute("style","background-color:red;");
         title.textContent = "wrong"
     }
     else{
     // (answers[i].choice2 = 1){
         scorenum++;
-        console.log(scorenum);
         score.textContent = scorenum;
-        console.log("Correct");
         title.setAttribute("style","background-color:rgb(0, 88, 0);");
         title.setAttribute("style","font-size: large;");
         title.textContent = "Javascript Fundamental Quiz"
@@ -154,20 +142,16 @@ function clickChoice2(){
 }
 
 function clickChoice3(){
-    console.log("Clickchoice3");
     if (answers[i].choice3 === 0){
         timernum = timernum - 5;
         timer.textContent = timernum; 
-        console.log("wrong");
         title.setAttribute("style","background-color:red;");
         title.textContent = "wrong"
     }
     else{
     // (answers[i].choice3 = 1){
         scorenum++;
-        console.log(scorenum);
         score.textContent = scorenum;
-        console.log("Correct");
         title.setAttribute("style","background-color:rgb(0, 88, 0);");
         title.setAttribute("style","font-size: large;");
         title.textContent = "Javascript Fundamental Quiz"
@@ -176,20 +160,16 @@ function clickChoice3(){
 }
 
 function clickChoice4(){
-    console.log("Clickchoice4");
     if (answers[i].choice4 === 0){
         timernum = timernum - 5;
         timer.textContent = timernum; 
-        console.log("wrong");
         title.setAttribute("style","background-color:red;");
         title.textContent = "wrong"
     }
     else{
     // (answers[i].choice4 = 1){
         scorenum++;
-        console.log(scorenum);
         score.textContent = scorenum;
-        console.log("Correct");
         title.setAttribute("style","background-color:rgb(0, 88, 0);");
         title.setAttribute("style","font-size: large;");
         title.textContent = "Javascript Fundamental Quiz"
@@ -198,13 +178,13 @@ function clickChoice4(){
 }
 
 function quiz(){
-    console.log("quiz");
     i++;
     if (i > 4){
         quest.textContent = scorenum
+        title.setAttribute("style","background-color:rgb(0, 88, 0);");
         opt.setAttribute("style","display:none;");
         clearInterval(countdown);
-        title.textContent ="Your Score is"
+        title.textContent ="You Finished the Quiz, Your Score is"
         checkHighscore();
     }
     if (i <= 4){
@@ -217,14 +197,15 @@ function quiz(){
   }
 
 function quizOver(){
-    console.log("quizOver")
-    quest.textContent = "Quiz Over!"
-    opt.setAttribute("style","display:none;");
+        quest.textContent = scorenum
+        title.setAttribute("style","background-color:rgb(0, 88, 0);");
+        opt.setAttribute("style","display:none;");
+        title.textContent ="The Quiz is Over, Your Score is"
+        checkHighscore();
 }
 
 function checkHighscore(){
-    highscorenum = localStorage.getItem(highscore);
-        console.log(highscorenum);
+    highscorenum = localStorage.getItem("highscore");
         if (scorenum > highscorenum || highscorenum === null){
             title.textContent = "New Highscore!"
         inSub.setAttribute("style","display: block;");
@@ -232,12 +213,9 @@ function checkHighscore(){
 }
 
 //saving to local storage
-function submit(){
-    highscorenum = scorenum
-    highscoretimenum = timernum
-    highscoreIP = ""
-    localStorage.setItem(highscore, highscorenum);
-    localStorage.setItem(highscoretime, highscoretimenum);
-    localStorage.setItem(initial, highscoreIP);
-    check();
+function submitscore(event){
+    event.preventDefault()
+    localStorage.setItem("highscore", scorenum);
+    localStorage.setItem("highscoretime", timernum);
+    localStorage.setItem("highscorein", initialInput.value);
 }
